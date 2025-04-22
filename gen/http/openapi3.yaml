@@ -1,0 +1,600 @@
+openapi: 3.0.3
+info:
+    title: Task Service
+    description: The task service is executing tasks created from policies.
+    version: 0.0.1
+servers:
+    - url: http://localhost:8082
+      description: Task Server
+paths:
+    /liveness:
+        get:
+            tags:
+                - health
+            summary: Liveness health
+            operationId: health#Liveness
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HealthResponse'
+                            example:
+                                service: Praesentium necessitatibus.
+                                status: Dolores reiciendis numquam ut.
+                                version: Ullam voluptas quos aut tempore.
+    /readiness:
+        get:
+            tags:
+                - health
+            summary: Readiness health
+            operationId: health#Readiness
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HealthResponse'
+                            example:
+                                service: Porro perspiciatis qui vitae totam eligendi officiis.
+                                status: Excepturi in ex ratione.
+                                version: Voluptatem iure qui facilis aut.
+    /v1/task/{taskName}:
+        post:
+            tags:
+                - task
+            summary: Create task
+            description: Create a task and put it in a queue for execution.
+            operationId: task#Create
+            parameters:
+                - name: taskName
+                  in: path
+                  description: Task name.
+                  required: true
+                  schema:
+                    type: string
+                    description: Task name.
+                    example: Quia dicta praesentium.
+                  example: Quidem sed et dicta libero voluptatem et.
+                - name: x-cache-namespace
+                  in: header
+                  description: Cache key namespace
+                  allowEmptyValue: true
+                  schema:
+                    type: string
+                    description: Cache key namespace
+                    example: login
+                  example: login
+                - name: x-cache-scope
+                  in: header
+                  description: Cache key scope
+                  allowEmptyValue: true
+                  schema:
+                    type: string
+                    description: Cache key scope
+                    example: user
+                  example: user
+            requestBody:
+                description: Data contains JSON payload that will be used for task execution.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            description: Data contains JSON payload that will be used for task execution.
+                            example: Assumenda adipisci.
+                        example: Voluptas aut enim.
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateTaskResult'
+                            example:
+                                taskID: Laboriosam perspiciatis vitae numquam.
+    /v1/taskList/{taskListName}:
+        post:
+            tags:
+                - taskList
+            summary: Create taskList
+            description: Create a task list and corresponding tasks and put them in respective queues for execution.
+            operationId: taskList#Create
+            parameters:
+                - name: taskListName
+                  in: path
+                  description: TaskList name.
+                  required: true
+                  schema:
+                    type: string
+                    description: TaskList name.
+                    example: Voluptas fugiat quos doloremque.
+                  example: Mollitia accusamus debitis quis molestiae.
+                - name: x-cache-namespace
+                  in: header
+                  description: Cache key namespace
+                  allowEmptyValue: true
+                  schema:
+                    type: string
+                    description: Cache key namespace
+                    example: login
+                  example: login
+                - name: x-cache-scope
+                  in: header
+                  description: Cache key scope
+                  allowEmptyValue: true
+                  schema:
+                    type: string
+                    description: Cache key scope
+                    example: user
+                  example: user
+            requestBody:
+                description: Data contains JSON payload that will be used for taskList execution.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            description: Data contains JSON payload that will be used for taskList execution.
+                            example: Accusantium porro aperiam.
+                        example: Soluta velit et ratione modi rerum et.
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateTaskListResult'
+                            example:
+                                taskListID: Aut voluptas possimus quia aliquam sit.
+    /v1/taskListStatus/{taskListID}:
+        get:
+            tags:
+                - taskList
+            summary: TaskListStatus taskList
+            description: TaskListStatus retrieves a taskList status containing all tasks' unique IDs and statuses from the Cache service.
+            operationId: taskList#TaskListStatus
+            parameters:
+                - name: taskListID
+                  in: path
+                  description: Unique taskList identifier.
+                  required: true
+                  schema:
+                    type: string
+                    description: Unique taskList identifier.
+                    example: Cupiditate nihil qui dolore quia rem.
+                  example: Rerum quia necessitatibus voluptates qui earum aut.
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TaskListStatusResponse'
+                            example:
+                                groups:
+                                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                                      status: done
+                                      tasks:
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                                      status: done
+                                      tasks:
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                                      status: done
+                                      tasks:
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                id: 9cc9f504-2b7f-4e24-ac59-653e9533840a
+                                status: done
+                "201":
+                    description: Created response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TaskListStatusResponse'
+                            example:
+                                groups:
+                                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                                      status: done
+                                      tasks:
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                                      status: done
+                                      tasks:
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                id: 9cc9f504-2b7f-4e24-ac59-653e9533840a
+                                status: done
+                "202":
+                    description: Accepted response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TaskListStatusResponse'
+                            example:
+                                groups:
+                                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                                      status: done
+                                      tasks:
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                                      status: done
+                                      tasks:
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                id: 9cc9f504-2b7f-4e24-ac59-653e9533840a
+                                status: done
+                "207":
+                    description: Multi-Status response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TaskListStatusResponse'
+                            example:
+                                groups:
+                                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                                      status: done
+                                      tasks:
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                                      status: done
+                                      tasks:
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                                      status: done
+                                      tasks:
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                                          status: done
+                                id: 9cc9f504-2b7f-4e24-ac59-653e9533840a
+                                status: done
+    /v1/taskResult/{taskID}:
+        get:
+            tags:
+                - task
+            summary: TaskResult task
+            description: TaskResult retrieves task result from the Cache service.
+            operationId: task#TaskResult
+            parameters:
+                - name: taskID
+                  in: path
+                  description: Unique task identifier.
+                  required: true
+                  schema:
+                    type: string
+                    description: Unique task identifier.
+                    example: Commodi maiores id error.
+                  example: Voluptatum non nam qui consequatur sunt id.
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                example: Corporis ad maxime et explicabo omnis tempore.
+                            example: Facilis nihil laborum voluptatem voluptas quis dolorem.
+components:
+    schemas:
+        CreateTaskListRequest:
+            type: object
+            properties:
+                cacheNamespace:
+                    type: string
+                    description: Cache key namespace.
+                    example: Unde qui qui.
+                cacheScope:
+                    type: string
+                    description: Cache key scope.
+                    example: Sed sed rem.
+                data:
+                    description: Data contains JSON payload that will be used for taskList execution.
+                    example: Suscipit aperiam quod alias numquam.
+                taskListName:
+                    type: string
+                    description: TaskList name.
+                    example: Quam doloremque.
+            example:
+                cacheNamespace: Corporis aut at et aut debitis.
+                cacheScope: Reprehenderit et tenetur et nulla perspiciatis.
+                data: Quia facere consequuntur inventore.
+                taskListName: Maxime id labore quisquam.
+            required:
+                - taskListName
+                - data
+        CreateTaskListResult:
+            type: object
+            properties:
+                taskListID:
+                    type: string
+                    description: Unique taskList identifier.
+                    example: Cupiditate qui.
+            example:
+                taskListID: Eligendi facilis.
+            required:
+                - taskListID
+        CreateTaskRequest:
+            type: object
+            properties:
+                cacheNamespace:
+                    type: string
+                    description: Cache key namespace.
+                    example: Omnis optio magni sunt aliquid et.
+                cacheScope:
+                    type: string
+                    description: Cache key scope.
+                    example: Dignissimos doloribus rerum occaecati quia ut.
+                data:
+                    description: Data contains JSON payload that will be used for task execution.
+                    example: Est eveniet dolores.
+                taskName:
+                    type: string
+                    description: Task name.
+                    example: Earum laborum accusamus id nihil.
+            example:
+                cacheNamespace: Excepturi ratione et dolore aut fuga.
+                cacheScope: Ea ea facilis molestias vitae repellat.
+                data: Nostrum distinctio et.
+                taskName: Error officiis dolor voluptatem vel.
+            required:
+                - taskName
+                - data
+        CreateTaskResult:
+            type: object
+            properties:
+                taskID:
+                    type: string
+                    description: Unique task identifier.
+                    example: Corrupti amet itaque a eius.
+            example:
+                taskID: Dolorem molestiae laborum quod ipsam perspiciatis culpa.
+            required:
+                - taskID
+        GroupStatus:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: Unique group identifier.
+                    example: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                status:
+                    type: string
+                    description: Current status of the group
+                    example: done
+                tasks:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TaskStatus'
+                    description: Array of TaskStatus
+                    example:
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+            example:
+                id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                status: done
+                tasks:
+                    - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                      status: done
+                    - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                      status: done
+                    - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                      status: done
+                    - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                      status: done
+        HealthResponse:
+            type: object
+            properties:
+                service:
+                    type: string
+                    description: Service name.
+                    example: Expedita cum tempora veritatis deleniti.
+                status:
+                    type: string
+                    description: Status message.
+                    example: Tempore voluptatem officiis est omnis a ipsa.
+                version:
+                    type: string
+                    description: Service runtime version.
+                    example: Tempore voluptatem voluptates qui velit neque nihil.
+            example:
+                service: Adipisci fuga dolores tempora sed accusamus accusantium.
+                status: Odio quidem optio consequatur eos.
+                version: Cupiditate impedit harum veniam quia ea sit.
+            required:
+                - service
+                - status
+                - version
+        TaskListStatusRequest:
+            type: object
+            properties:
+                taskListID:
+                    type: string
+                    description: Unique taskList identifier.
+                    example: A error quia esse.
+            example:
+                taskListID: Accusantium et rerum consectetur aut.
+            required:
+                - taskListID
+        TaskListStatusResponse:
+            type: object
+            properties:
+                groups:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GroupStatus'
+                    description: Array of GroupStatus
+                    example:
+                        - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                          status: done
+                          tasks:
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                        - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                          status: done
+                          tasks:
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                        - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                          status: done
+                          tasks:
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                        - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                          status: done
+                          tasks:
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                            - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                              status: done
+                id:
+                    type: string
+                    description: Unique taskList identifier.
+                    example: 9cc9f504-2b7f-4e24-ac59-653e9533840a
+                status:
+                    type: string
+                    description: Current status of the taskList
+                    example: done
+            example:
+                groups:
+                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                      status: done
+                      tasks:
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                      status: done
+                      tasks:
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                    - id: a7d1349d-34b5-4c65-b671-d1aa362fc446
+                      status: done
+                      tasks:
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                        - id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                          status: done
+                id: 9cc9f504-2b7f-4e24-ac59-653e9533840a
+                status: done
+            required:
+                - id
+                - status
+        TaskResultRequest:
+            type: object
+            properties:
+                taskID:
+                    type: string
+                    description: Unique task identifier.
+                    example: Voluptatem recusandae ut qui ut eos.
+            example:
+                taskID: Facilis deserunt dolore animi nobis.
+            required:
+                - taskID
+        TaskStatus:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: Unique task identifier.
+                    example: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                status:
+                    type: string
+                    description: Current status of the task
+                    example: done
+            example:
+                id: d16996cd-1977-42a9-90b2-b4548a35c1b4
+                status: done
+tags:
+    - name: task
+      description: Task service provides endpoints to work with tasks.
+    - name: taskList
+      description: TaskList service provides endpoints to work with task lists.
+    - name: health
+      description: Health service provides health check endpoints.
