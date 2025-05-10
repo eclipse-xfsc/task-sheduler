@@ -7,11 +7,11 @@ github.com/cenkalti/backoff/v4
 # github.com/cespare/xxhash/v2 v2.3.0
 ## explicit; go 1.11
 github.com/cespare/xxhash/v2
-# github.com/cloudevents/sdk-go/protocol/nats/v2 v2.14.0
-## explicit; go 1.17
+# github.com/cloudevents/sdk-go/protocol/nats/v2 v2.15.2
+## explicit; go 1.18
 github.com/cloudevents/sdk-go/protocol/nats/v2
-# github.com/cloudevents/sdk-go/v2 v2.14.0
-## explicit; go 1.17
+# github.com/cloudevents/sdk-go/v2 v2.15.2
+## explicit; go 1.18
 github.com/cloudevents/sdk-go/v2
 github.com/cloudevents/sdk-go/v2/binding
 github.com/cloudevents/sdk-go/v2/binding/format
@@ -85,11 +85,13 @@ github.com/json-iterator/go
 # github.com/kelseyhightower/envconfig v1.4.0
 ## explicit
 github.com/kelseyhightower/envconfig
-# github.com/klauspost/compress v1.13.6
-## explicit; go 1.15
+# github.com/klauspost/compress v1.17.2
+## explicit; go 1.18
 github.com/klauspost/compress
+github.com/klauspost/compress/flate
 github.com/klauspost/compress/fse
 github.com/klauspost/compress/huff0
+github.com/klauspost/compress/internal/cpuinfo
 github.com/klauspost/compress/internal/snapref
 github.com/klauspost/compress/zstd
 github.com/klauspost/compress/zstd/internal/xxhash
@@ -139,8 +141,6 @@ github.com/manveru/faker
 # github.com/matttproud/golang_protobuf_extensions v1.0.4
 ## explicit; go 1.9
 github.com/matttproud/golang_protobuf_extensions/pbutil
-# github.com/minio/highwayhash v1.0.2
-## explicit; go 1.15
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
 ## explicit
 github.com/modern-go/concurrent
@@ -150,12 +150,11 @@ github.com/modern-go/reflect2
 # github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe
 ## explicit
 github.com/montanaflynn/stats
-# github.com/nats-io/jwt/v2 v2.5.3
-## explicit; go 1.18
-# github.com/nats-io/nats.go v1.13.1-0.20220308171302-2f2f6968e98d
-## explicit; go 1.16
+# github.com/nats-io/nats.go v1.31.0
+## explicit; go 1.20
 github.com/nats-io/nats.go
 github.com/nats-io/nats.go/encoders/builtin
+github.com/nats-io/nats.go/internal/parser
 github.com/nats-io/nats.go/util
 # github.com/nats-io/nkeys v0.4.6
 ## explicit; go 1.19
