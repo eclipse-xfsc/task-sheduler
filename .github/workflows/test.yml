@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   call-go-tests:
+    secrets: inherit
     uses: eclipse-xfsc/dev-ops/.github/workflows/go-test.yml@main
     with:
       go-version: '1.24'
