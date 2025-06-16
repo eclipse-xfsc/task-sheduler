@@ -7,7 +7,7 @@ toolchain go1.24.2
 require (
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudevents/sdk-go/protocol/nats/v2 v2.14.0
-	github.com/cloudevents/sdk-go/v2 v2.14.0
+	github.com/cloudevents/sdk-go/v2 v2.16.1
 	github.com/eclipse-xfsc/microservice-core-go v1.1.0
 	github.com/google/uuid v1.6.0
 	github.com/kelseyhightower/envconfig v1.4.0
@@ -17,7 +17,7 @@ require (
 	go.uber.org/zap v1.27.0
 	goa.design/goa/v3 v3.20.1
 	golang.org/x/oauth2 v0.11.0
-	golang.org/x/sync v0.13.0
+	golang.org/x/sync v0.15.0
 )
 
 require (
